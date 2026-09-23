@@ -1,0 +1,23 @@
+# Manifest del consumidor. Contrato e inventario a la vez (ARCHITECTURE.md §2.1).
+week: 9
+name: fleet-bot
+core_version: 0.9.0
+
+reused_modules:
+  - llm-client
+  - schema-validate
+  - test-kit
+  - ci-pack
+  - cache-ratelimit
+  - bot-base
+
+new_surface:
+  - "ciclo matutino: audit (ci-pack.lints) + evidencia (ci_pack.metrics) + digest LLM en un solo run"
+  - "seed de bot-base (sem. 9): recurrencia programada determinista con idempotencia de día"
+  - "primer consumidor de la flota que reusa cache-ratelimit en una tarea recurrente (TTL diario)"
+  - "digest de una línea por tarea (ok/skipped/failed) que no corta en silencio (§5.1)"
+
+estimated_new_surface: 30
+
+# Presupuesto máximo de evals en USD por semana (ARCHITECTURE.md §8.1).
+eval_budget_usd: 2.0

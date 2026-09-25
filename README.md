@@ -10,11 +10,18 @@ programada** la decide `bot-base`, con idempotencia de día (`.bot/state.json`).
 ```bash
 uv sync
 uv run fleet-bot run --repos ../commit-cli ../release-scribe ../sec-check \
-    ../bench-runner ../eval-api ../ci-scribe ../llm-gateway ..
-# - audit: lints OK
-# - evidence: 7 consumidores, $0.0000 acumulados
-# - digest: flota en verde hoy (watch: —)
+    ../bench-runner ../eval-api ../ci-scribe ../llm-gateway \
+    ../fleet-bot ../content-ray ../evidence-api
+# - audit: ok — 10 repos, lints OK
+# - evidence: ok — 10 consumidores, $0.0000 acumulados
+# - digest: ok — Auditoría matutina de 10 repos de la flota: evidencia del día registrada
+#   en los 10, sin fallos de verificación pendientes. (watch: …)
 ```
+
+Pasa la lista **explícita** de repos: un `..` haría lints sobre todos los proyectos
+hermanos y parece un cuelgue. El texto del digest varía (es LLM); lo garantizado por
+el bot es que valida contra `daily-digest-v1` o marca `failed` (la próxima corrida
+reintenta). Los números (repos/consumidores) son de la corrida: crecen con la flota.
 
 Un segundo `run` el mismo día es `skipped` (idempotencia): no vuelve a auditar ni a
 pagar. Un `digest` cuya salida no valida contra `daily-digest-v1` es `failed` y **no**
